@@ -5,6 +5,7 @@ WORKDIR /opt
 ENV FRP_VERSION 0.30.0
 
 RUN set -x && \
+        apk add --no-cache pcre bash && \
         wget --no-check-certificate https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_amd64.tar.gz && \ 
         tar xzf frp_${FRP_VERSION}_linux_amd64.tar.gz && \
         mkdir -p /opt/frp && \
@@ -12,8 +13,8 @@ RUN set -x && \
         chmod +x /usr/local/bin/frps && \
         rm -rf /var/cache/apk/* ~/.cache frp_${FRP_VERSION}_linux_amd64.tar.gz frp_${FRP_VERSION}_linux_amd64
 
-ADD entrypoint.sh /opt/entrypoint.sh
-RUN chmod +x /opt/entrypoint.sh
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 VOLUME /opt/frp
 
