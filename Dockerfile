@@ -1,5 +1,5 @@
 FROM alpine:latest
-MAINTAINER huangxiang6
+MAINTAINER hanxianzhai
 
 WORKDIR /opt
 ENV FRP_VERSION 0.30.0
@@ -13,9 +13,12 @@ RUN set -x && \
         chmod +x /usr/local/bin/frps && \
         mv frps.ini /opt/frp/frps.ini && \
         cd .. && \
-        rm -rf *.tar.gz && \
-        rm -rf frp_${FRP_VERSION}_linux_amd64
+        rm -rf /var/cache/apk/* ~/.cache frp_${FRP_VERSION}_linux_amd64.tar.gz frp_${FRP_VERSION}_linux_amd64
+
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 VOLUME /opt/conf
 
-CMD frps -c /opt/frp/frps.ini
+ENTRYPOINT ["/entrypoint.sh"]
+#CMD frps -c /opt/frp/frps.ini
